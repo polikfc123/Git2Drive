@@ -1,34 +1,46 @@
 @echo off
-:: Set the directory where the GitHub repository is located
-set "REPO_DIR=C:\path\to\your\repository"
+:: set google drive directory here
+set "GOOGLE_DRIVE_DIR=C:\path\to\GoogleDrive\Backups"
 
-:: directory where google drive is synced
-set "BACKUP_DIR=C:\path\to\GoogleDrive\Backups"
+:: sets directory for temporary clone
+set "TEMP_CLONE_DIR=%GOOGLE_DRIVE_DIR%\temp_clone"
 
-:: replace with your github Personal Access Token
+:: sets location for final backup location. DO NOT TOUCH!!!!!
+set "FINAL_BACKUP_DIR=%GOOGLE_DRIVE_DIR%\repository_backup"
+
+:: put your github personal access token here
 set "GITHUB_TOKEN=your_personal_access_token"
 
-:: Github repo URL (replace with your own)
+:: set github repository URL here
 set "GITHUB_REPO=https://%GITHUB_TOKEN%@github.com/username/repository.git"
 
-:: Sets time interval in seconds for backup. Modify to whatever you want.
+:: set the time interval (in seconds) for the backup (3600 seconds = 1 hour)
 set "INTERVAL=3600"
 
-:: Start the loop for automatic backups
+:: starts loop for automatic backups
 :LOOP
 echo Backing up the repository...
 
-:: Change to the repository directory
-cd /d "%REPO_DIR%"
+:: removes old temporary clones
+if exist "%TEMP_CLONE_DIR%" (
+    echo Removing old temporary clone directory...
+    rmdir /s /q "%TEMP_CLONE_DIR%"
+)
 
-:: Pull the latest changes from the GitHub repository using the token for authentication
-git pull %GITHUB_REPO%
+:: clones repository to temporary directory
+echo Cloning repository to temporary directory...
+git clone %GITHUB_REPO% "%TEMP_CLONE_DIR%"
 
-:: copies repository to google drive
-xcopy "%REPO_DIR%" "%BACKUP_DIR%\repository_backup" /e /y /i
+:: copies repository to final location
+echo Copying repository to final backup location...
+xcopy "%TEMP_CLONE_DIR%" "%FINAL_BACKUP_DIR%" /e /y /i
 
-:: wait for next backup
+:: removes temporary clone
+echo Removing temporary clone directory...
+rmdir /s /q "%TEMP_CLONE_DIR%"
+
+:: waits for next backup
 timeout /t %INTERVAL% /nobreak
 
-:: repeats loop
+:: repeats the loop
 goto LOOP

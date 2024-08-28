@@ -1,4 +1,6 @@
 @echo off
+:: Set the directory where the GitHub repository is located
+set "REPO_DIR=C:\path\to\your\repository"
 
 :: directory where google drive is synced
 set "BACKUP_DIR=C:\path\to\GoogleDrive\Backups"

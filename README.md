@@ -1,1 +1,2 @@
-THIS PROGRAM USES GIT https://github.com/git/git
+# GITSYNC
+![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)

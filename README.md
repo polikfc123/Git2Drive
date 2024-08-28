@@ -13,7 +13,7 @@ ___
 ___
 
 # DEPENDENCIES
-You just need to have git and Google Drive for Desktop downloaded!
+You just need to have git and Google Drive for Desktop downloaded! You also need to have a copy of your repository saved.
 
 This is my first program, so I hope you don't encounter any problems, of course. If you do, just make an issue, and I'll work on it as soon as possible!
 
